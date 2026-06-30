@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interpretación médica · Guía y glosario bilingüe</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#11212b; --ink-soft:#41525b; --muted:#7b8890;
+    --paper:#f6f3ea; --card:#ffffff; --line:#e7e1d3;
+    --teal:#137a63; --teal-soft:#e3efe9; --teal-ink:#0c4f41;
+    --gold:#a9781a; --warn:#b23a26; --warn-soft:#f7e8e3; --warn-line:#e9c3b8;
+    --radius:12px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Manrope",system-ui,-apple-system,sans-serif;
+    font-size:16px; line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:900px; margin:0 auto; padding:0 20px;}
+
+  header.hero{padding:56px 0 32px;}
+  .kicker{font-size:12px; letter-spacing:.18em; text-transform:uppercase; color:var(--teal); font-weight:600; margin:0 0 14px;}
+  h1{font-family:"Fraunces",serif; font-weight:500; font-size:clamp(34px,6vw,52px); line-height:1.04; margin:0 0 16px; letter-spacing:-.01em;}
+  h1 em{font-style:italic; color:var(--teal);}
+  .lede{font-size:clamp(17px,2.4vw,20px); color:var(--ink-soft); max-width:62ch; margin:0 0 22px;}
+  .stat{display:inline-flex; gap:18px; flex-wrap:wrap; font-size:13px; color:var(--muted);}
+  .stat b{font-family:"Fraunces",serif; font-weight:600; font-size:20px; color:var(--ink); margin-right:6px;}
+
+  .rule{height:1px; background:var(--line); margin:8px 0 0;}
+
+  section.block{padding:34px 0;}
+  h2{font-family:"Fraunces",serif; font-weight:500; font-size:clamp(24px,4vw,32px); margin:0 0 6px; letter-spacing:-.01em;}
+  .sub{color:var(--muted); font-size:14px; margin:0 0 20px;}
+
+  details.acc{border:1px solid var(--line); border-radius:var(--radius); background:var(--card); margin-bottom:12px; overflow:hidden;}
+  details.acc summary{list-style:none; cursor:pointer; padding:18px 20px; font-weight:600; font-size:17px; display:flex; align-items:center; justify-content:space-between; gap:12px;}
+  details.acc summary::-webkit-details-marker{display:none;}
+  details.acc summary .pl{color:var(--teal); font-family:"Fraunces",serif; font-size:22px; line-height:1; transition:transform .2s ease; flex:none;}
+  details.acc[open] summary .pl{transform:rotate(45deg);}
+  details.acc .body{padding:2px 20px 22px; color:var(--ink-soft);}
+  details.acc .body p{margin:0 0 12px;}
+  details.acc .body ul{margin:0 0 12px; padding-left:20px;}
+  details.acc .body li{margin:0 0 8px;}
+  details.acc .body strong{color:var(--ink);}
+  .script{background:var(--teal-soft); border-radius:10px; padding:14px 16px; margin:0 0 10px; font-size:14.5px;}
+  .script .role{display:block; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--teal-ink); font-weight:700; margin-bottom:5px;}
+  .note-soft{font-size:13px; color:var(--muted); font-style:italic;}
+
+  /* toolbar */
+  .toolbar{position:sticky; top:0; z-index:20; background:color-mix(in srgb, var(--paper) 92%, transparent); backdrop-filter:blur(8px); padding:14px 0 12px; border-bottom:1px solid var(--line); margin-top:6px;}
+  .search{position:relative; margin-bottom:12px;}
+  .search input{width:100%; border:1.5px solid var(--line); border-radius:10px; background:var(--card); padding:13px 16px 13px 42px; font-family:inherit; font-size:16px; color:var(--ink); outline:none; transition:border-color .15s;}
+  .search input:focus{border-color:var(--teal);}
+  .search .ic{position:absolute; left:15px; top:50%; transform:translateY(-50%); color:var(--muted); font-size:16px;}
+  .chips{display:flex; gap:8px; overflow-x:auto; padding-bottom:4px; -webkit-overflow-scrolling:touch;}
+  .chips::-webkit-scrollbar{height:0;}
+  .chip{flex:none; border:1px solid var(--line); background:var(--card); color:var(--ink-soft); padding:7px 13px; border-radius:999px; font-family:inherit; font-size:13px; font-weight:600; cursor:pointer; white-space:nowrap; transition:all .14s;}
+  .chip:hover{border-color:var(--teal);}
+  .chip.on{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .countline{font-size:12px; color:var(--muted); margin:10px 0 0;}
+
+  /* glossary */
+  .cat{margin-top:30px;}
+  .cat-h{font-family:"Fraunces",serif; font-weight:600; font-size:21px; margin:0 0 4px; display:flex; align-items:baseline; gap:10px; color:var(--ink); scroll-margin-top:120px;}
+  .cat-n{font-family:"Manrope"; font-weight:600; font-size:12px; color:var(--teal); background:var(--teal-soft); padding:2px 9px; border-radius:999px;}
+  .cat-h.warn-h{color:var(--warn);}
+  .cat-h.warn-h .cat-n{color:var(--warn); background:var(--warn-soft);}
+
+  .term{display:grid; grid-template-columns:1fr 1fr; gap:4px 24px; padding:13px 2px; border-bottom:1px solid var(--line);}
+  .term .en{font-weight:600; color:var(--ink);}
+  .term .es{color:var(--teal-ink); font-weight:500;}
+  .term .note{grid-column:1/-1; font-size:13.5px; color:var(--muted); margin-top:3px; line-height:1.5;}
+  .term.warn{background:var(--warn-soft); border:1px solid var(--warn-line); border-radius:10px; padding:13px 14px; margin-bottom:8px;}
+  .term.warn .es{color:var(--warn);}
+  .term.warn .note{color:#8d3320;}
+  mark{background:#fde7a8; color:inherit; padding:0 1px; border-radius:2px;}
+  .empty{color:var(--muted); padding:40px 0; text-align:center; font-size:15px;}
+
+  footer{padding:40px 0 60px; color:var(--muted); font-size:13px; border-top:1px solid var(--line); margin-top:40px;}
+  footer strong{color:var(--ink-soft);}
+
+  @media(max-width:560px){
+    .term{grid-template-columns:1fr; gap:2px;}
+    .term .es{font-size:15px;}
+    header.hero{padding:40px 0 24px;}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important;}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="hero">
+    <p class="kicker">Interpretación médica · ES / EN</p>
+    <h1>El puente entre <em>dos idiomas</em>, sin perder una palabra.</h1>
+    <p class="lede">Tu guía de arranque para interpretación médica: cómo funciona el trabajo, la ética que te van a evaluar, cómo certificarte, y un glosario bilingüe buscable para que llegues sonando profesional desde el primer turno.</p>
+    <div class="stat">
+      <span><b id="hTerms">0</b>términos</span>
+      <span><b id="hCats">0</b>categorías</span>
+      <span><b>40h</b>curso base sugerido</span>
+    </div>
+  </header>
+  <div class="rule"></div>
+
+  <section class="block">
+    <h2>Primero, lo esencial</h2>
+    <p class="sub">Esto es lo que toda operación espera que entiendas. Léelo una vez y queda.</p>
+
+    <details class="acc" open>
+      <summary>Qué es realmente este trabajo <span class="pl">+</span></summary>
+      <div class="body">
+        <p>Eres el puente entre un paciente y un proveedor de salud que no hablan el mismo idioma. No eres asistente del doctor ni amigo del paciente. Tu único trabajo es transmitir todo lo que se dice, con fidelidad y sin tomar partido, para que ambos se entiendan como si hablaran el mismo idioma.</p>
+        <p>La mayoría del trabajo en un BPO es por teléfono (OPI) o por video (VRI). El proveedor habla, hace una pausa, tú interpretas, y se van turnando. A eso se le llama interpretación consecutiva y es la más común en lo médico.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Los 5 pilares de la ética (esto te lo preguntan) <span class="pl">+</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>Precisión.</strong> Interpretas todo, sin agregar, omitir ni cambiar nada. No resumes ni mejoras lo que dijo la persona.</li>
+          <li><strong>Confidencialidad.</strong> Todo lo que escuchas es privado y no sale de la sesión. En Estados Unidos lo protege la ley HIPAA.</li>
+          <li><strong>Imparcialidad.</strong> Sin opiniones, sin consejos, sin tomar partido por nadie.</li>
+          <li><strong>Transparencia.</strong> Todo lo que se diga en la sala lo escuchan ambas partes. Nada de conversaciones privadas con uno solo.</li>
+          <li><strong>Límites de tu rol.</strong> Si necesitas aclarar o pedir una pausa, hablas como tercera persona (el intérprete solicita...). No explicas medicina por tu cuenta.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Cómo interpretas en la práctica <span class="pl">+</span></summary>
+      <div class="body">
+        <ul>
+          <li><strong>Primera persona.</strong> Hablas como si fueras quien habla. Si el paciente dice me duele la cabeza, tú dices I have a headache, nunca él dice que le duele la cabeza.</li>
+          <li><strong>Controla el ritmo.</strong> Si alguien habla de más y se te va a olvidar, pide una pausa con educación. Es profesional, no es debilidad.</li>
+          <li><strong>Nunca inventes.</strong> Si no conoces un término, pides aclaración. Adivinar en medicina confunde diagnósticos.</li>
+          <li><strong>Transmite el significado, no la palabra.</strong> Los dichos y modismos rara vez se traducen literal. Pasa la idea real.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Cómo entrar y certificarte <span class="pl">+</span></summary>
+      <div class="body">
+        <p>Casi todas las operaciones piden un curso de interpretación médica de <strong>40 horas</strong>. Los más reconocidos son Bridging the Gap y The Community Interpreter.</p>
+        <ul>
+          <li>Te piden comprobar dominio de ambos idiomas, ser mayor de edad y tener preparatoria.</li>
+          <li>Las dos certificaciones nacionales en Estados Unidos son <strong>CCHI</strong> (credenciales CoreCHI y CHI) y <strong>NBCMI</strong> (credencial CMI, Certified Medical Interpreter). El español tiene examen oral en ambas.</li>
+          <li>Muchas empresas piden capacitación en <strong>HIPAA</strong> y, a veces, su propia prueba de idioma dentro del onboarding.</li>
+        </ul>
+        <p class="note-soft">Los costos y requisitos exactos cambian con el tiempo. Confírmalos directo en el sitio de cada organización antes de pagar.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Recursos para aprender y practicar <span class="pl">+</span></summary>
+      <div class="body">
+        <ul>
+          <li>Estándares de práctica y código de ética del <strong>NCIHC</strong> y del <strong>IMIA</strong>. Son documentos gratuitos y la base de lo que te evalúan.</li>
+          <li><strong>MedlinePlus en español</strong> para entender términos y condiciones en lenguaje claro.</li>
+          <li><strong>Shadowing.</strong> Escucha una consulta o un video de práctica y repite en voz alta interpretando. Grábate y escúchate.</li>
+          <li>Arma tus propias listas de los términos que se te traban y repásalas antes de cada turno. Este glosario es tu punto de partida.</li>
+        </ul>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Script típico de una llamada (apertura y cierre) <span class="pl">+</span></summary>
+      <div class="body">
+        <div class="script"><span class="role">Apertura · al proveedor</span>Hello, my name is [nombre], I am your Spanish interpreter, ID [número]. Everything that is said will be interpreted and kept confidential. Please speak directly to each other and in short sentences.</div>
+        <div class="script"><span class="role">Apertura · al paciente</span>Hola, soy su intérprete de español. Todo lo que se diga será interpretado y es confidencial. Por favor hablen directamente entre ustedes y en frases cortas.</div>
+        <div class="script"><span class="role">Cierre</span>This is the interpreter, is there anything else before we end the call? · Habla el intérprete, ¿algo más antes de terminar la llamada?</div>
+        <p class="note-soft">Cada empresa tiene su propio guion de apertura. Lo aprendes en el primer día, pero llegar sabiendo la estructura te hace ver listo.</p>
+      </div>
+    </details>
+
+    <details class="acc">
+      <summary>Errores de novato a evitar <span class="pl">+</span></summary>
+      <div class="body">
+        <ul>
+          <li>Resumir o mejorar lo que dijo alguien. Interpreta tal cual.</li>
+          <li>Hablar en tercera persona. Usa siempre primera persona.</li>
+          <li>Inventar un término que no conoces. Pide aclaración.</li>
+          <li>Involucrarte emocionalmente o dar consejos. Mantén la calma y la neutralidad.</li>
+          <li>Dejar que hablen sin parar. Controla el ritmo con educación.</li>
+          <li>Caer en falsos amigos. Revisa esa sección del glosario, ahí están las trampas.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="block">
+    <h2>Glosario bilingüe</h2>
+    <p class="sub">Busca cualquier término en inglés o español. El buscador ignora acentos. Filtra por categoría con las pestañas.</p>
+
+    <div class="toolbar">
+      <div class="search">
+        <span class="ic">⌕</span>
+        <input id="q" type="search" placeholder="Buscar: fiebre, headache, embarazo, blood test..." autocomplete="off" aria-label="Buscar término">
+      </div>
+      <div class="chips" id="chips"></div>
+      <p class="countline">Mostrando <span id="count">0</span> términos</p>
+    </div>
+
+    <div id="list"></div>
+  </section>
+
+  <footer>
+    <p><strong>Cómo usar esta guía.</strong> Es una herramienta de estudio para arrancar, no un sustituto de tu capacitación oficial ni asesoría legal o médica. Los detalles de certificaciones, leyes y precios cambian, verifícalos en la fuente antes de tomar decisiones. Las traducciones incluyen el término clínico y el coloquial que usan los pacientes, porque vas a escuchar los dos.</p>
+  </footer>
+
+</div>
+
+<script>
+const ENTRIES = [
+  // Anatomía y cuerpo
+  {en:"Head",es:"Cabeza",cat:"Anatomía y cuerpo"},
+  {en:"Skull",es:"Cráneo",cat:"Anatomía y cuerpo"},
+  {en:"Brain",es:"Cerebro",cat:"Anatomía y cuerpo"},
+  {en:"Face",es:"Cara / rostro",cat:"Anatomía y cuerpo"},
+  {en:"Eye",es:"Ojo",cat:"Anatomía y cuerpo"},
+  {en:"Ear",es:"Oído (audición) / oreja (externa)",cat:"Anatomía y cuerpo",note:"Oído es la parte interna y la audición; oreja es la parte de fuera."},
+  {en:"Nose",es:"Nariz",cat:"Anatomía y cuerpo"},
+  {en:"Mouth",es:"Boca",cat:"Anatomía y cuerpo"},
+  {en:"Tongue",es:"Lengua",cat:"Anatomía y cuerpo"},
+  {en:"Tooth / teeth",es:"Diente / dientes / muela",cat:"Anatomía y cuerpo"},
+  {en:"Gums",es:"Encías",cat:"Anatomía y cuerpo"},
+  {en:"Throat",es:"Garganta",cat:"Anatomía y cuerpo"},
+  {en:"Neck",es:"Cuello",cat:"Anatomía y cuerpo"},
+  {en:"Shoulder",es:"Hombro",cat:"Anatomía y cuerpo"},
+  {en:"Arm",es:"Brazo",cat:"Anatomía y cuerpo"},
+  {en:"Elbow",es:"Codo",cat:"Anatomía y cuerpo"},
+  {en:"Wrist",es:"Muñeca",cat:"Anatomía y cuerpo"},
+  {en:"Hand",es:"Mano",cat:"Anatomía y cuerpo"},
+  {en:"Finger",es:"Dedo (de la mano)",cat:"Anatomía y cuerpo"},
+  {en:"Thumb",es:"Pulgar / dedo gordo",cat:"Anatomía y cuerpo"},
+  {en:"Chest",es:"Pecho / tórax",cat:"Anatomía y cuerpo"},
+  {en:"Breast",es:"Seno / mama / pecho",cat:"Anatomía y cuerpo"},
+  {en:"Ribs",es:"Costillas",cat:"Anatomía y cuerpo"},
+  {en:"Lungs",es:"Pulmones",cat:"Anatomía y cuerpo"},
+  {en:"Heart",es:"Corazón",cat:"Anatomía y cuerpo"},
+  {en:"Abdomen / belly",es:"Abdomen / vientre / panza",cat:"Anatomía y cuerpo",note:"Panza y barriga son coloquiales; el paciente las usa, el clínico dice abdomen."},
+  {en:"Stomach",es:"Estómago",cat:"Anatomía y cuerpo"},
+  {en:"Liver",es:"Hígado",cat:"Anatomía y cuerpo"},
+  {en:"Kidneys",es:"Riñones",cat:"Anatomía y cuerpo"},
+  {en:"Bladder",es:"Vejiga",cat:"Anatomía y cuerpo"},
+  {en:"Bowel / intestines",es:"Intestino(s)",cat:"Anatomía y cuerpo"},
+  {en:"Colon",es:"Colon",cat:"Anatomía y cuerpo"},
+  {en:"Back",es:"Espalda",cat:"Anatomía y cuerpo"},
+  {en:"Spine",es:"Columna (vertebral)",cat:"Anatomía y cuerpo"},
+  {en:"Lower back",es:"Espalda baja / zona lumbar",cat:"Anatomía y cuerpo"},
+  {en:"Hip",es:"Cadera",cat:"Anatomía y cuerpo"},
+  {en:"Buttocks",es:"Glúteos / nalgas",cat:"Anatomía y cuerpo"},
+  {en:"Leg",es:"Pierna",cat:"Anatomía y cuerpo"},
+  {en:"Thigh",es:"Muslo",cat:"Anatomía y cuerpo"},
+  {en:"Knee",es:"Rodilla",cat:"Anatomía y cuerpo"},
+  {en:"Calf",es:"Pantorrilla",cat:"Anatomía y cuerpo"},
+  {en:"Ankle",es:"Tobillo",cat:"Anatomía y cuerpo"},
+  {en:"Foot / feet",es:"Pie / pies",cat:"Anatomía y cuerpo"},
+  {en:"Toe",es:"Dedo del pie",cat:"Anatomía y cuerpo"},
+  {en:"Heel",es:"Talón",cat:"Anatomía y cuerpo"},
+  {en:"Skin",es:"Piel",cat:"Anatomía y cuerpo"},
+  {en:"Bone",es:"Hueso",cat:"Anatomía y cuerpo"},
+  {en:"Muscle",es:"Músculo",cat:"Anatomía y cuerpo"},
+  {en:"Joint",es:"Articulación / coyuntura",cat:"Anatomía y cuerpo"},
+  {en:"Nerve",es:"Nervio",cat:"Anatomía y cuerpo"},
+  {en:"Blood",es:"Sangre",cat:"Anatomía y cuerpo"},
+  {en:"Vein",es:"Vena",cat:"Anatomía y cuerpo"},
+  {en:"Artery",es:"Arteria",cat:"Anatomía y cuerpo"},
+  {en:"Womb / uterus",es:"Útero / matriz",cat:"Anatomía y cuerpo"},
+  {en:"Ovary",es:"Ovario",cat:"Anatomía y cuerpo"},
+  {en:"Genitals",es:"Genitales / partes íntimas",cat:"Anatomía y cuerpo"},
+
+  // Sistemas del cuerpo
+  {en:"Cardiovascular system",es:"Sistema cardiovascular",cat:"Sistemas del cuerpo"},
+  {en:"Respiratory system",es:"Sistema respiratorio",cat:"Sistemas del cuerpo"},
+  {en:"Digestive system",es:"Sistema digestivo / gastrointestinal",cat:"Sistemas del cuerpo"},
+  {en:"Nervous system",es:"Sistema nervioso",cat:"Sistemas del cuerpo"},
+  {en:"Immune system",es:"Sistema inmunológico",cat:"Sistemas del cuerpo"},
+  {en:"Musculoskeletal system",es:"Sistema musculoesquelético",cat:"Sistemas del cuerpo"},
+  {en:"Endocrine system",es:"Sistema endocrino",cat:"Sistemas del cuerpo"},
+  {en:"Urinary system",es:"Sistema urinario",cat:"Sistemas del cuerpo"},
+  {en:"Reproductive system",es:"Sistema reproductor",cat:"Sistemas del cuerpo"},
+  {en:"Lymphatic system",es:"Sistema linfático",cat:"Sistemas del cuerpo"},
+
+  // Síntomas
+  {en:"Pain",es:"Dolor",cat:"Síntomas"},
+  {en:"Headache",es:"Dolor de cabeza",cat:"Síntomas"},
+  {en:"Migraine",es:"Migraña / jaqueca",cat:"Síntomas"},
+  {en:"Fever",es:"Fiebre / calentura",cat:"Síntomas"},
+  {en:"Chills",es:"Escalofríos",cat:"Síntomas"},
+  {en:"Cough",es:"Tos",cat:"Síntomas"},
+  {en:"Sore throat",es:"Dolor de garganta",cat:"Síntomas"},
+  {en:"Runny nose",es:"Escurrimiento nasal / mocos",cat:"Síntomas"},
+  {en:"Congestion",es:"Congestión",cat:"Síntomas"},
+  {en:"Shortness of breath",es:"Falta de aire / dificultad para respirar",cat:"Síntomas"},
+  {en:"Wheezing",es:"Sibilancias / silbido al respirar",cat:"Síntomas"},
+  {en:"Chest pain",es:"Dolor de pecho",cat:"Síntomas"},
+  {en:"Palpitations",es:"Palpitaciones",cat:"Síntomas"},
+  {en:"Dizziness",es:"Mareo",cat:"Síntomas"},
+  {en:"Lightheadedness",es:"Aturdimiento / sensación de desmayo",cat:"Síntomas"},
+  {en:"Fainting",es:"Desmayo",cat:"Síntomas"},
+  {en:"Nausea",es:"Náusea",cat:"Síntomas"},
+  {en:"Vomiting",es:"Vómito",cat:"Síntomas"},
+  {en:"Diarrhea",es:"Diarrea",cat:"Síntomas"},
+  {en:"Constipation",es:"Estreñimiento",cat:"Síntomas",note:"Cuidado al interpretar: estreñimiento, no constipado. Ver Falsos amigos."},
+  {en:"Bloating",es:"Hinchazón / distensión abdominal",cat:"Síntomas"},
+  {en:"Heartburn",es:"Agruras / acidez",cat:"Síntomas"},
+  {en:"Abdominal pain",es:"Dolor abdominal / dolor de estómago",cat:"Síntomas"},
+  {en:"Cramps",es:"Cólicos / calambres",cat:"Síntomas"},
+  {en:"Swelling",es:"Hinchazón / inflamación",cat:"Síntomas"},
+  {en:"Rash",es:"Sarpullido / erupción / salpullido",cat:"Síntomas"},
+  {en:"Itching",es:"Comezón / picazón",cat:"Síntomas"},
+  {en:"Bruise",es:"Moretón / hematoma",cat:"Síntomas"},
+  {en:"Bleeding",es:"Sangrado",cat:"Síntomas"},
+  {en:"Numbness",es:"Entumecimiento / adormecimiento",cat:"Síntomas"},
+  {en:"Tingling",es:"Hormigueo",cat:"Síntomas"},
+  {en:"Weakness",es:"Debilidad",cat:"Síntomas"},
+  {en:"Fatigue",es:"Fatiga / cansancio",cat:"Síntomas"},
+  {en:"Blurred vision",es:"Visión borrosa",cat:"Síntomas"},
+  {en:"Ringing in the ears",es:"Zumbido en los oídos",cat:"Síntomas"},
+  {en:"Loss of appetite",es:"Falta de apetito",cat:"Síntomas"},
+  {en:"Weight loss",es:"Pérdida de peso",cat:"Síntomas"},
+  {en:"Weight gain",es:"Aumento de peso",cat:"Síntomas"},
+  {en:"Night sweats",es:"Sudores nocturnos",cat:"Síntomas"},
+  {en:"Seizure",es:"Convulsión / ataque",cat:"Síntomas"},
+  {en:"Difficulty swallowing",es:"Dificultad para tragar",cat:"Síntomas"},
+  {en:"Hoarseness",es:"Ronquera",cat:"Síntomas"},
+  {en:"Lump",es:"Bulto / bola",cat:"Síntomas"},
+  {en:"Stiffness",es:"Rigidez / tieso",cat:"Síntomas"},
+
+  // Describir el dolor
+  {en:"Sharp pain",es:"Dolor agudo / punzante",cat:"Describir el dolor"},
+  {en:"Dull pain",es:"Dolor sordo",cat:"Describir el dolor"},
+  {en:"Throbbing",es:"Pulsátil / palpitante",cat:"Describir el dolor"},
+  {en:"Burning",es:"Ardor / quemante",cat:"Describir el dolor"},
+  {en:"Stabbing",es:"Punzante / como puñalada",cat:"Describir el dolor"},
+  {en:"Cramping",es:"Tipo cólico / como calambre",cat:"Describir el dolor"},
+  {en:"Aching",es:"Dolor constante / adolorido",cat:"Describir el dolor"},
+  {en:"Shooting pain",es:"Dolor que se irradia / corrientazo",cat:"Describir el dolor"},
+  {en:"Tender",es:"Sensible al tacto / adolorido",cat:"Describir el dolor"},
+  {en:"Mild",es:"Leve",cat:"Describir el dolor"},
+  {en:"Moderate",es:"Moderado",cat:"Describir el dolor"},
+  {en:"Severe",es:"Intenso / fuerte",cat:"Describir el dolor",note:"Para gravedad di intenso, fuerte o grave. Ver Falsos amigos sobre severo."},
+  {en:"Constant",es:"Constante",cat:"Describir el dolor"},
+  {en:"Intermittent",es:"Intermitente / va y viene",cat:"Describir el dolor"},
+  {en:"On a scale of 1 to 10",es:"En una escala del 1 al 10",cat:"Describir el dolor"},
+
+  // Enfermedades y condiciones
+  {en:"High blood pressure / hypertension",es:"Presión alta / hipertensión",cat:"Enfermedades y condiciones"},
+  {en:"Low blood pressure",es:"Presión baja / hipotensión",cat:"Enfermedades y condiciones"},
+  {en:"Diabetes",es:"Diabetes",cat:"Enfermedades y condiciones"},
+  {en:"Asthma",es:"Asma",cat:"Enfermedades y condiciones"},
+  {en:"Allergy",es:"Alergia",cat:"Enfermedades y condiciones"},
+  {en:"Pneumonia",es:"Neumonía / pulmonía",cat:"Enfermedades y condiciones"},
+  {en:"Bronchitis",es:"Bronquitis",cat:"Enfermedades y condiciones"},
+  {en:"Flu / influenza",es:"Gripe / influenza / gripa",cat:"Enfermedades y condiciones"},
+  {en:"Common cold",es:"Resfriado / catarro",cat:"Enfermedades y condiciones"},
+  {en:"Infection",es:"Infección",cat:"Enfermedades y condiciones"},
+  {en:"Heart attack",es:"Infarto / ataque al corazón",cat:"Enfermedades y condiciones"},
+  {en:"Stroke",es:"Derrame cerebral / embolia",cat:"Enfermedades y condiciones",note:"También accidente cerebrovascular (EVC) en lenguaje clínico."},
+  {en:"Cancer",es:"Cáncer",cat:"Enfermedades y condiciones"},
+  {en:"Tumor",es:"Tumor",cat:"Enfermedades y condiciones"},
+  {en:"Arthritis",es:"Artritis",cat:"Enfermedades y condiciones"},
+  {en:"Anemia",es:"Anemia",cat:"Enfermedades y condiciones"},
+  {en:"Obesity",es:"Obesidad",cat:"Enfermedades y condiciones"},
+  {en:"Kidney stone",es:"Cálculo renal / piedra en el riñón",cat:"Enfermedades y condiciones"},
+  {en:"Gallstone",es:"Cálculo biliar / piedra en la vesícula",cat:"Enfermedades y condiciones"},
+  {en:"Ulcer",es:"Úlcera",cat:"Enfermedades y condiciones"},
+  {en:"Hernia",es:"Hernia",cat:"Enfermedades y condiciones"},
+  {en:"Appendicitis",es:"Apendicitis",cat:"Enfermedades y condiciones"},
+  {en:"Epilepsy",es:"Epilepsia",cat:"Enfermedades y condiciones"},
+  {en:"High cholesterol",es:"Colesterol alto",cat:"Enfermedades y condiciones"},
+  {en:"Thyroid disorder",es:"Trastorno de tiroides",cat:"Enfermedades y condiciones"},
+  {en:"COPD",es:"EPOC (enfermedad pulmonar obstructiva crónica)",cat:"Enfermedades y condiciones"},
+  {en:"Urinary tract infection (UTI)",es:"Infección urinaria / de vías urinarias",cat:"Enfermedades y condiciones"},
+  {en:"Hepatitis",es:"Hepatitis",cat:"Enfermedades y condiciones"},
+  {en:"HIV / AIDS",es:"VIH / SIDA",cat:"Enfermedades y condiciones"},
+  {en:"Fracture",es:"Fractura",cat:"Enfermedades y condiciones"},
+  {en:"Sprain",es:"Esguince / torcedura",cat:"Enfermedades y condiciones"},
+  {en:"Dislocation",es:"Luxación / dislocación",cat:"Enfermedades y condiciones"},
+  {en:"Burn",es:"Quemadura",cat:"Enfermedades y condiciones"},
+  {en:"Wound",es:"Herida",cat:"Enfermedades y condiciones"},
+  {en:"Dehydration",es:"Deshidratación",cat:"Enfermedades y condiciones"},
+  {en:"Concussion",es:"Conmoción cerebral",cat:"Enfermedades y condiciones"},
+  {en:"Inflammation",es:"Inflamación",cat:"Enfermedades y condiciones"},
+
+  // Especialidades
+  {en:"Cardiology",es:"Cardiología",cat:"Especialidades"},
+  {en:"Dermatology",es:"Dermatología",cat:"Especialidades"},
+  {en:"Neurology",es:"Neurología",cat:"Especialidades"},
+  {en:"Oncology",es:"Oncología",cat:"Especialidades"},
+  {en:"Pediatrics",es:"Pediatría",cat:"Especialidades"},
+  {en:"Gynecology",es:"Ginecología",cat:"Especialidades"},
+  {en:"Obstetrics",es:"Obstetricia",cat:"Especialidades"},
+  {en:"Orthopedics",es:"Ortopedia",cat:"Especialidades"},
+  {en:"Psychiatry",es:"Psiquiatría",cat:"Especialidades"},
+  {en:"Radiology",es:"Radiología",cat:"Especialidades"},
+  {en:"Urology",es:"Urología",cat:"Especialidades"},
+  {en:"Gastroenterology",es:"Gastroenterología",cat:"Especialidades"},
+  {en:"Ophthalmology",es:"Oftalmología",cat:"Especialidades"},
+  {en:"ENT / otolaryngology",es:"Otorrinolaringología",cat:"Especialidades"},
+  {en:"Endocrinology",es:"Endocrinología",cat:"Especialidades"},
+  {en:"Nephrology",es:"Nefrología",cat:"Especialidades"},
+  {en:"Pulmonology",es:"Neumología",cat:"Especialidades"},
+  {en:"Anesthesiology",es:"Anestesiología",cat:"Especialidades"},
+  {en:"Emergency medicine",es:"Medicina de urgencias",cat:"Especialidades"},
+  {en:"Family medicine",es:"Medicina familiar",cat:"Especialidades"},
+  {en:"Internal medicine",es:"Medicina interna",cat:"Especialidades"},
+  {en:"Surgery",es:"Cirugía",cat:"Especialidades"},
+  {en:"Physical therapy",es:"Fisioterapia / terapia física",cat:"Especialidades"},
+
+  // Procedimientos y estudios
+  {en:"X-ray",es:"Radiografía / rayos X",cat:"Procedimientos y estudios"},
+  {en:"Blood test",es:"Análisis de sangre / examen de sangre",cat:"Procedimientos y estudios"},
+  {en:"Urine test",es:"Análisis de orina",cat:"Procedimientos y estudios"},
+  {en:"MRI",es:"Resonancia magnética",cat:"Procedimientos y estudios"},
+  {en:"CT / CAT scan",es:"Tomografía computarizada / TAC",cat:"Procedimientos y estudios"},
+  {en:"Ultrasound",es:"Ultrasonido / ecografía",cat:"Procedimientos y estudios"},
+  {en:"Biopsy",es:"Biopsia",cat:"Procedimientos y estudios"},
+  {en:"EKG / ECG",es:"Electrocardiograma",cat:"Procedimientos y estudios"},
+  {en:"Mammogram",es:"Mamografía",cat:"Procedimientos y estudios"},
+  {en:"Colonoscopy",es:"Colonoscopia",cat:"Procedimientos y estudios"},
+  {en:"Endoscopy",es:"Endoscopia",cat:"Procedimientos y estudios"},
+  {en:"Injection / shot",es:"Inyección",cat:"Procedimientos y estudios"},
+  {en:"IV (intravenous)",es:"Vía intravenosa / suero",cat:"Procedimientos y estudios"},
+  {en:"Surgery / operation",es:"Cirugía / operación",cat:"Procedimientos y estudios"},
+  {en:"Stitches / sutures",es:"Puntadas / puntos / suturas",cat:"Procedimientos y estudios"},
+  {en:"Cast",es:"Yeso / férula",cat:"Procedimientos y estudios"},
+  {en:"Catheter",es:"Catéter / sonda",cat:"Procedimientos y estudios"},
+  {en:"Transfusion",es:"Transfusión",cat:"Procedimientos y estudios"},
+  {en:"Anesthesia",es:"Anestesia",cat:"Procedimientos y estudios"},
+  {en:"Stress test",es:"Prueba de esfuerzo",cat:"Procedimientos y estudios"},
+  {en:"Pap smear",es:"Papanicolaou / citología",cat:"Procedimientos y estudios"},
+  {en:"Screening",es:"Examen de detección / tamizaje",cat:"Procedimientos y estudios"},
+  {en:"Swab",es:"Hisopo / muestra con hisopo",cat:"Procedimientos y estudios"},
+  {en:"Sample / specimen",es:"Muestra",cat:"Procedimientos y estudios"},
+  {en:"Dialysis",es:"Diálisis",cat:"Procedimientos y estudios"},
+  {en:"Chemotherapy",es:"Quimioterapia",cat:"Procedimientos y estudios"},
+  {en:"Radiation therapy",es:"Radioterapia",cat:"Procedimientos y estudios"},
+  {en:"Checkup",es:"Chequeo / revisión",cat:"Procedimientos y estudios"},
+  {en:"Physical exam",es:"Examen físico / revisión",cat:"Procedimientos y estudios"},
+
+  // Medicamentos y farmacia
+  {en:"Medication / medicine",es:"Medicamento / medicina",cat:"Medicamentos y farmacia"},
+  {en:"Pill / tablet",es:"Pastilla / tableta",cat:"Medicamentos y farmacia"},
+  {en:"Capsule",es:"Cápsula",cat:"Medicamentos y farmacia"},
+  {en:"Dose",es:"Dosis",cat:"Medicamentos y farmacia"},
+  {en:"Prescription",es:"Receta médica",cat:"Medicamentos y farmacia"},
+  {en:"Over-the-counter",es:"De venta libre / sin receta",cat:"Medicamentos y farmacia"},
+  {en:"Antibiotic",es:"Antibiótico",cat:"Medicamentos y farmacia"},
+  {en:"Painkiller / pain reliever",es:"Analgésico / calmante",cat:"Medicamentos y farmacia"},
+  {en:"Anti-inflammatory",es:"Antiinflamatorio",cat:"Medicamentos y farmacia"},
+  {en:"Antacid",es:"Antiácido",cat:"Medicamentos y farmacia"},
+  {en:"Antidepressant",es:"Antidepresivo",cat:"Medicamentos y farmacia"},
+  {en:"Blood thinner",es:"Anticoagulante",cat:"Medicamentos y farmacia"},
+  {en:"Insulin",es:"Insulina",cat:"Medicamentos y farmacia"},
+  {en:"Inhaler",es:"Inhalador",cat:"Medicamentos y farmacia"},
+  {en:"Drops",es:"Gotas",cat:"Medicamentos y farmacia"},
+  {en:"Ointment / cream",es:"Pomada / crema / ungüento",cat:"Medicamentos y farmacia"},
+  {en:"Syrup",es:"Jarabe",cat:"Medicamentos y farmacia"},
+  {en:"Suppository",es:"Supositorio",cat:"Medicamentos y farmacia"},
+  {en:"Side effect",es:"Efecto secundario",cat:"Medicamentos y farmacia"},
+  {en:"Allergic reaction",es:"Reacción alérgica",cat:"Medicamentos y farmacia"},
+  {en:"Refill",es:"Resurtir la receta",cat:"Medicamentos y farmacia"},
+  {en:"Take with food",es:"Tomar con alimentos",cat:"Medicamentos y farmacia"},
+  {en:"Take on an empty stomach",es:"Tomar en ayunas",cat:"Medicamentos y farmacia"},
+  {en:"Twice a day",es:"Dos veces al día",cat:"Medicamentos y farmacia"},
+  {en:"As needed",es:"Según sea necesario",cat:"Medicamentos y farmacia"},
+  {en:"Overdose",es:"Sobredosis",cat:"Medicamentos y farmacia"},
+
+  // Signos vitales
+  {en:"Blood pressure",es:"Presión arterial",cat:"Signos vitales"},
+  {en:"Heart rate / pulse",es:"Frecuencia cardíaca / pulso",cat:"Signos vitales"},
+  {en:"Temperature",es:"Temperatura",cat:"Signos vitales"},
+  {en:"Respiratory rate",es:"Frecuencia respiratoria",cat:"Signos vitales"},
+  {en:"Oxygen level / saturation",es:"Nivel de oxígeno / saturación",cat:"Signos vitales"},
+  {en:"Weight",es:"Peso",cat:"Signos vitales"},
+  {en:"Height",es:"Estatura / altura",cat:"Signos vitales"},
+  {en:"Blood sugar / glucose",es:"Azúcar en sangre / glucosa",cat:"Signos vitales"},
+  {en:"BMI",es:"Índice de masa corporal (IMC)",cat:"Signos vitales"},
+
+  // Hospital y personal
+  {en:"Hospital",es:"Hospital",cat:"Hospital y personal"},
+  {en:"Clinic",es:"Clínica",cat:"Hospital y personal"},
+  {en:"Emergency room (ER)",es:"Sala de urgencias / emergencias",cat:"Hospital y personal"},
+  {en:"Operating room (OR)",es:"Quirófano / sala de operaciones",cat:"Hospital y personal"},
+  {en:"Intensive care unit (ICU)",es:"Unidad de cuidados intensivos (UCI)",cat:"Hospital y personal"},
+  {en:"Waiting room",es:"Sala de espera",cat:"Hospital y personal"},
+  {en:"Doctor / physician",es:"Doctor / médico",cat:"Hospital y personal"},
+  {en:"Nurse",es:"Enfermero / enfermera",cat:"Hospital y personal"},
+  {en:"Surgeon",es:"Cirujano / cirujana",cat:"Hospital y personal"},
+  {en:"Specialist",es:"Especialista",cat:"Hospital y personal"},
+  {en:"Primary care provider",es:"Médico de cabecera / de atención primaria",cat:"Hospital y personal"},
+  {en:"Pediatrician",es:"Pediatra",cat:"Hospital y personal"},
+  {en:"Paramedic",es:"Paramédico",cat:"Hospital y personal"},
+  {en:"Pharmacist",es:"Farmacéutico / farmacéutica",cat:"Hospital y personal"},
+  {en:"Patient",es:"Paciente",cat:"Hospital y personal"},
+  {en:"Caregiver",es:"Cuidador / cuidadora",cat:"Hospital y personal"},
+  {en:"Appointment",es:"Cita",cat:"Hospital y personal"},
+  {en:"Referral",es:"Referencia / interconsulta / pase",cat:"Hospital y personal"},
+  {en:"Admission",es:"Ingreso / admisión",cat:"Hospital y personal"},
+  {en:"Discharge (from hospital)",es:"Alta (médica)",cat:"Hospital y personal",note:"Salir del hospital es dar de alta. La secreción del cuerpo es otra cosa, ver Falsos amigos."},
+  {en:"Gurney / stretcher",es:"Camilla",cat:"Hospital y personal"},
+  {en:"Wheelchair",es:"Silla de ruedas",cat:"Hospital y personal"},
+  {en:"Medical record / chart",es:"Expediente médico / historial clínico",cat:"Hospital y personal"},
+  {en:"Consent form",es:"Consentimiento informado",cat:"Hospital y personal"},
+
+  // Urgencias
+  {en:"Emergency",es:"Emergencia / urgencia",cat:"Urgencias"},
+  {en:"Ambulance",es:"Ambulancia",cat:"Urgencias"},
+  {en:"Bleeding heavily",es:"Sangrado abundante / hemorragia",cat:"Urgencias"},
+  {en:"Unconscious",es:"Inconsciente / desmayado",cat:"Urgencias"},
+  {en:"Not breathing",es:"No respira",cat:"Urgencias"},
+  {en:"Choking",es:"Asfixia / atragantamiento",cat:"Urgencias"},
+  {en:"Poisoning",es:"Envenenamiento / intoxicación",cat:"Urgencias"},
+  {en:"CPR",es:"RCP (reanimación cardiopulmonar)",cat:"Urgencias"},
+  {en:"Cardiac arrest",es:"Paro cardíaco",cat:"Urgencias"},
+  {en:"Trauma",es:"Trauma / traumatismo",cat:"Urgencias"},
+  {en:"Life-threatening",es:"Que pone en peligro la vida",cat:"Urgencias"},
+
+  // Salud mental
+  {en:"Mental health",es:"Salud mental",cat:"Salud mental"},
+  {en:"Depression",es:"Depresión",cat:"Salud mental"},
+  {en:"Anxiety",es:"Ansiedad",cat:"Salud mental"},
+  {en:"Panic attack",es:"Ataque de pánico",cat:"Salud mental"},
+  {en:"Stress",es:"Estrés",cat:"Salud mental"},
+  {en:"Bipolar disorder",es:"Trastorno bipolar",cat:"Salud mental"},
+  {en:"Schizophrenia",es:"Esquizofrenia",cat:"Salud mental"},
+  {en:"PTSD",es:"Trastorno de estrés postraumático (TEPT)",cat:"Salud mental"},
+  {en:"Suicidal thoughts",es:"Pensamientos suicidas",cat:"Salud mental"},
+  {en:"Self-harm",es:"Autolesión / hacerse daño",cat:"Salud mental"},
+  {en:"Counseling / therapy",es:"Terapia / consejería",cat:"Salud mental"},
+  {en:"Psychologist",es:"Psicólogo / psicóloga",cat:"Salud mental"},
+  {en:"Psychiatrist",es:"Psiquiatra",cat:"Salud mental"},
+  {en:"Insomnia",es:"Insomnio",cat:"Salud mental"},
+  {en:"Mood",es:"Estado de ánimo",cat:"Salud mental"},
+  {en:"Grief",es:"Duelo",cat:"Salud mental"},
+
+  // Embarazo y pediatría
+  {en:"Pregnant",es:"Embarazada",cat:"Embarazo y pediatría"},
+  {en:"Pregnancy",es:"Embarazo",cat:"Embarazo y pediatría"},
+  {en:"Due date",es:"Fecha probable de parto",cat:"Embarazo y pediatría"},
+  {en:"Labor",es:"Trabajo de parto",cat:"Embarazo y pediatría",note:"Labor en obstetricia es trabajo de parto, no labor de trabajo. Ver Falsos amigos."},
+  {en:"Delivery / birth",es:"Parto / nacimiento",cat:"Embarazo y pediatría"},
+  {en:"Contractions",es:"Contracciones",cat:"Embarazo y pediatría"},
+  {en:"C-section",es:"Cesárea",cat:"Embarazo y pediatría"},
+  {en:"Vaginal delivery",es:"Parto vaginal / natural",cat:"Embarazo y pediatría"},
+  {en:"Miscarriage",es:"Aborto espontáneo / pérdida del embarazo",cat:"Embarazo y pediatría",note:"Usa pérdida del embarazo con tacto; aborto espontáneo es el término clínico."},
+  {en:"Trimester",es:"Trimestre",cat:"Embarazo y pediatría"},
+  {en:"Prenatal care",es:"Control prenatal / cuidado prenatal",cat:"Embarazo y pediatría"},
+  {en:"Epidural",es:"Epidural / bloqueo epidural",cat:"Embarazo y pediatría"},
+  {en:"Newborn",es:"Recién nacido",cat:"Embarazo y pediatría"},
+  {en:"Breastfeeding",es:"Lactancia / amamantar",cat:"Embarazo y pediatría"},
+  {en:"Morning sickness",es:"Náuseas del embarazo",cat:"Embarazo y pediatría"},
+  {en:"Period / menstruation",es:"Periodo / menstruación / regla",cat:"Embarazo y pediatría"},
+  {en:"Birth control",es:"Anticonceptivos / control natal",cat:"Embarazo y pediatría"},
+  {en:"Vaccine schedule",es:"Esquema de vacunación",cat:"Embarazo y pediatría"},
+
+  // Funciones del cuerpo
+  {en:"Urine / to urinate",es:"Orina / orinar",cat:"Funciones del cuerpo"},
+  {en:"Pee (informal)",es:"Pipí / hacer del baño",cat:"Funciones del cuerpo"},
+  {en:"Stool / bowel movement",es:"Heces / evacuación / excremento",cat:"Funciones del cuerpo"},
+  {en:"Poop (informal)",es:"Popó / obrar",cat:"Funciones del cuerpo"},
+  {en:"To have a bowel movement",es:"Evacuar / hacer del baño / obrar",cat:"Funciones del cuerpo"},
+  {en:"Phlegm / mucus",es:"Flema / moco",cat:"Funciones del cuerpo"},
+  {en:"Sweat",es:"Sudor",cat:"Funciones del cuerpo"},
+  {en:"Saliva / spit",es:"Saliva",cat:"Funciones del cuerpo"},
+  {en:"Vomit",es:"Vómito",cat:"Funciones del cuerpo"},
+  {en:"Pus",es:"Pus",cat:"Funciones del cuerpo"},
+  {en:"Discharge (secretion)",es:"Flujo / secreción",cat:"Funciones del cuerpo"},
+  {en:"Gas / flatulence",es:"Gases / flatulencia",cat:"Funciones del cuerpo"},
+
+  // Instrucciones y alta
+  {en:"Follow-up",es:"Seguimiento / cita de seguimiento",cat:"Instrucciones y alta"},
+  {en:"Rest",es:"Reposo / descanso",cat:"Instrucciones y alta"},
+  {en:"Drink fluids",es:"Tomar líquidos",cat:"Instrucciones y alta"},
+  {en:"Apply ice",es:"Aplicar hielo",cat:"Instrucciones y alta"},
+  {en:"Apply heat",es:"Aplicar calor",cat:"Instrucciones y alta"},
+  {en:"Elevate",es:"Elevar",cat:"Instrucciones y alta"},
+  {en:"Keep the wound clean and dry",es:"Mantener la herida limpia y seca",cat:"Instrucciones y alta"},
+  {en:"Watch for signs of infection",es:"Vigilar señales de infección",cat:"Instrucciones y alta"},
+  {en:"Return if symptoms worsen",es:"Regresar si los síntomas empeoran",cat:"Instrucciones y alta"},
+  {en:"Take as directed",es:"Tomar según indicado",cat:"Instrucciones y alta"},
+  {en:"Finish all the medication",es:"Terminar todo el medicamento",cat:"Instrucciones y alta"},
+  {en:"Fasting",es:"Ayuno / en ayunas",cat:"Instrucciones y alta"},
+  {en:"Bed rest",es:"Reposo en cama",cat:"Instrucciones y alta"},
+
+  // Seguro y administración
+  {en:"Insurance",es:"Seguro médico",cat:"Seguro y administración"},
+  {en:"Coverage",es:"Cobertura",cat:"Seguro y administración"},
+  {en:"Copay",es:"Copago",cat:"Seguro y administración"},
+  {en:"Deductible",es:"Deducible",cat:"Seguro y administración"},
+  {en:"Claim",es:"Reclamo / reclamación",cat:"Seguro y administración"},
+  {en:"Authorization",es:"Autorización",cat:"Seguro y administración"},
+  {en:"In-network",es:"Dentro de la red",cat:"Seguro y administración"},
+  {en:"Out-of-pocket",es:"De su bolsillo / gastos no cubiertos",cat:"Seguro y administración"},
+  {en:"Eligibility",es:"Elegibilidad",cat:"Seguro y administración"},
+  {en:"Bill",es:"Factura / cuenta",cat:"Seguro y administración"},
+
+  // Frases del intérprete
+  {en:"The interpreter requests a moment.",es:"El intérprete solicita un momento.",cat:"Frases del intérprete"},
+  {en:"The interpreter requests repetition.",es:"El intérprete solicita una repetición.",cat:"Frases del intérprete"},
+  {en:"The interpreter requests clarification.",es:"El intérprete solicita una aclaración.",cat:"Frases del intérprete"},
+  {en:"The interpreter would like to clarify a term.",es:"El intérprete desea aclarar un término.",cat:"Frases del intérprete"},
+  {en:"Everything you say will be interpreted.",es:"Todo lo que diga será interpretado.",cat:"Frases del intérprete"},
+  {en:"Everything is confidential.",es:"Todo es confidencial.",cat:"Frases del intérprete"},
+  {en:"Please speak in short sentences.",es:"Por favor hable en frases cortas.",cat:"Frases del intérprete"},
+  {en:"Please speak directly to the patient.",es:"Por favor hable directamente con el paciente.",cat:"Frases del intérprete"},
+  {en:"The interpreter will speak in the first person.",es:"El intérprete hablará en primera persona.",cat:"Frases del intérprete"},
+  {en:"The interpreter did not hear the last part.",es:"El intérprete no escuchó la última parte.",cat:"Frases del intérprete"},
+  {en:"Could you please repeat that?",es:"¿Podría repetir eso, por favor?",cat:"Frases del intérprete"},
+  {en:"One moment, please.",es:"Un momento, por favor.",cat:"Frases del intérprete"},
+  {en:"This is the interpreter.",es:"Habla el intérprete.",cat:"Frases del intérprete"},
+
+  // Falsos amigos
+  {en:"Constipated",es:"Estreñido",cat:"Falsos amigos",note:"Trampa fuerte. No es constipado. En español constipado suena a resfriado o congestión nasal. Si confundes esto, cambias el síntoma."},
+  {en:"Embarrassed",es:"Avergonzado / con pena",cat:"Falsos amigos",note:"No es embarazada (pregnant). El error clásico que voltea todo el sentido."},
+  {en:"Intoxicated",es:"Ebrio / bajo efectos del alcohol",cat:"Falsos amigos",note:"No es intoxicado. En español intoxicado suele ser envenenamiento o intoxicación por alimentos."},
+  {en:"Molest",es:"Abusar sexualmente",cat:"Falsos amigos",note:"Nunca lo traduzcas como molestar (bother). En contexto médico o legal molest implica abuso sexual."},
+  {en:"Preservative",es:"Conservador (de alimentos)",cat:"Falsos amigos",note:"Falso amigo peligroso. Preservativo en español es condón, no conservador."},
+  {en:"Disorder",es:"Trastorno",cat:"Falsos amigos",note:"No uses desorden (desarreglo o desorden físico). El término clínico es trastorno."},
+  {en:"Sane",es:"Cuerdo / en sus facultades",cat:"Falsos amigos",note:"No es sano (healthy). Sane se refiere a la salud mental."},
+  {en:"Severe",es:"Grave / intenso / fuerte",cat:"Falsos amigos",note:"Severo tradicionalmente significa estricto. Para gravedad di grave o intenso, aunque severo ya se usa mucho."},
+  {en:"Labor",es:"Trabajo de parto",cat:"Falsos amigos",note:"No es labor de trabajo. En obstetricia labor es el trabajo de parto."},
+  {en:"To introduce",es:"Presentar (a una persona)",cat:"Falsos amigos",note:"Introducir en español es insertar (una sonda, por ejemplo). Para presentar a alguien usa presentar."},
+  {en:"Realize",es:"Darse cuenta",cat:"Falsos amigos",note:"No es realizar (to carry out). Realize es percatarse de algo."},
+  {en:"Actually",es:"En realidad / de hecho",cat:"Falsos amigos",note:"No es actualmente (currently). Actually significa en realidad."},
+  {en:"Drug",es:"Medicamento / fármaco",cat:"Falsos amigos",note:"Droga en español suele implicar droga ilegal. Para medicina di medicamento."},
+  {en:"Record (medical)",es:"Expediente / historial",cat:"Falsos amigos",note:"No es recordar (to remember). El medical record es el expediente clínico."},
+  {en:"Discharge",es:"Alta (del hospital) o secreción del cuerpo",cat:"Falsos amigos",note:"Doble sentido. Salir del hospital es dar de alta. Lo que sale del cuerpo es flujo o secreción. El contexto manda."},
+  {en:"Condition",es:"Padecimiento / afección",cat:"Falsos amigos",note:"Condición también significa estado o requisito. Para enfermedad usa padecimiento o afección."},
+  {en:"Bland diet",es:"Dieta blanda / suave",cat:"Falsos amigos",note:"Bland es suave o sin condimentos. Blando en español es soft. Hay traslape, cuida el contexto."},
+  {en:"Exit",es:"Salida",cat:"Falsos amigos",note:"No es éxito (success). Un letrero de Exit es Salida."}
+];
+
+const CATS = ["Anatomía y cuerpo","Sistemas del cuerpo","Síntomas","Describir el dolor","Enfermedades y condiciones","Especialidades","Procedimientos y estudios","Medicamentos y farmacia","Signos vitales","Hospital y personal","Urgencias","Salud mental","Embarazo y pediatría","Funciones del cuerpo","Instrucciones y alta","Seguro y administración","Frases del intérprete","Falsos amigos"];
+
+let activeCat = "Todas";
+let q = "";
+
+function norm(s){return s.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");}
+function escRe(s){return s.replace(/[.*+?^${}()|[\]\\]/g,"\\$&");}
+function hl(text){
+  if(!q) return text;
+  try{ return text.replace(new RegExp("("+escRe(q)+")","ig"),"<mark>$1</mark>"); }
+  catch(e){ return text; }
+}
+function matchEntry(e){
+  if(activeCat!=="Todas" && e.cat!==activeCat) return false;
+  if(!q) return true;
+  return norm(e.en+" "+e.es+" "+(e.note||"")).includes(norm(q));
+}
+
+function chip(c){ return '<button class="chip'+(activeCat===c?" on":"")+'" data-cat="'+c+'">'+c+'</button>'; }
+function renderChips(){
+  const bar = document.getElementById("chips");
+  let html = chip("Todas");
+  for(const c of CATS) html += chip(c);
+  bar.innerHTML = html;
+  bar.querySelectorAll("button").forEach(b=>{
+    b.addEventListener("click",()=>{ activeCat=b.dataset.cat; renderChips(); render(); });
+  });
+}
+
+function render(){
+  const root = document.getElementById("list");
+  let html=""; let total=0;
+  for(const c of CATS){
+    const items = ENTRIES.filter(e=>e.cat===c && matchEntry(e));
+    if(!items.length) continue;
+    total += items.length;
+    const warn = c==="Falsos amigos";
+    html += '<section class="cat"><h3 class="cat-h'+(warn?" warn-h":"")+'">'+c+' <span class="cat-n">'+items.length+'</span></h3>';
+    for(const e of items){
+      html += '<div class="term'+(warn?" warn":"")+'">';
+      html += '<div class="en">'+hl(e.en)+'</div>';
+      html += '<div class="es">'+hl(e.es)+'</div>';
+      if(e.note) html += '<div class="note">'+hl(e.note)+'</div>';
+      html += '</div>';
+    }
+    html += '</section>';
+  }
+  if(!total) html = '<p class="empty">No se encontraron términos. Prueba con otra palabra.</p>';
+  root.innerHTML = html;
+  document.getElementById("count").textContent = total;
+}
+
+document.getElementById("q").addEventListener("input",e=>{ q=e.target.value.trim(); render(); });
+
+document.getElementById("hTerms").textContent = ENTRIES.length;
+document.getElementById("hCats").textContent = CATS.length;
+renderChips();
+render();
+</script>
+</body>
+</html>
